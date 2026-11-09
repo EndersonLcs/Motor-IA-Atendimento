@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id             String  @id
+  config_json    String  
+  leads          Lead[]
+}
+
+model Lead {
+  id             Int       @id @default(autoincrement())
+  telefone       String
+  tenant_id      String
+  nome           String?
+  cidade         String?
+  estagio        String    @default("Novo")
+  tags           String?   
+  intervencao    Boolean   @default(false)
+  ficha_json     String    @default("{}") 
+  tenant         Tenant    @relation(fields: [tenant_id], references: [id])
+  mensagens      Message[]
+
+  @@unique([telefone, tenant_id])
+}
+
+model Message {
+  id             Int      @id @default(autoincrement())
+  message_id     String   @unique 
+  lead_id        Int
+  texto          String
+  autor          String   
+  timestamp      DateTime @default(now())
+  lead           Lead     @relation(fields: [lead_id], references: [id])
+}
+
+model Audit {
+  id             Int      @id @default(autoincrement())
+  tenant_id      String
+  acao           String
+  detalhes_json  String
+  tokens_in      Int?
+  tokens_out     Int?
+  latencia_ms    Int?
+  timestamp      DateTime @default(now())
+}

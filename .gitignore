@@ -1,0 +1,28 @@
+# Dependências
+node_modules/
+
+# Arquivos de ambiente (NUNCA suba suas chaves secretas)
+.env
+.env*.local
+
+# Build e compilação do TypeScript
+dist/
+build/
+
+# Banco de dados SQLite (evita subir os dados locais de teste)
+*.db
+*.db-journal
+prisma/dev.db
+prisma/dev.db-journal
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Cobertura de testes (Jest)
+coverage/
+
+# Arquivos de sistema operacional
+.DS_Store
+Thumbs.db
